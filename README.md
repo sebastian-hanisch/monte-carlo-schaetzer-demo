@@ -1,7 +1,6 @@
 # Der Monte-Carlo-Schätzer und sein Fehler – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-monte-carlo-schaetzer-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-monte-carlo-schaetzer-demo.streamlit.app/)**
 
 Erstes Stück (Wurzel) der Linie **„Monte-Carlo-Schätzung und Varianzreduktion“** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“ (die Linie wird erst vollständig veröffentlicht). Ein Verfahren, ein wachsendes Beispiel: der **Monte-Carlo-Schätzer**, eine Wahrscheinlichkeit durch Ziehen und Zählen zu schätzen. Dieses Stück fragt nur: **Wie viele Ziehungen braucht man, und wann darf man dem Konfidenzintervall trauen?** Die Folgestücke senken den Fehler (Stücke 2 bis 6), machen Seltenes erreichbar (7 und 8) oder erweitern das Ziel (9 bis 13).
 
@@ -131,4 +130,4 @@ Gebaut mit Streamlit, Plotly, NumPy, SciPy und fpdf2.
 
 ---
 
-Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Monte-Carlo-Schätzung: vom Schätzer zur Wahl](https://sebastianhanisch.net/konzepte-monte-carlo.html).
