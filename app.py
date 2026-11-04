@@ -97,7 +97,7 @@ with st.container(key="kopf"):
 st.markdown(
     """
 Ein **Monte-Carlo-Schätzer** schätzt eine Wahrscheinlichkeit, indem er **zieht und zählt**: Man würfelt das Netz aus, prüft, ob es noch zusammenhängt, und teilt die Zahl der Ausfälle durch die Zahl der Ziehungen.
-Sein **Fehler fällt wie 1/√N**, ganz gleich, wie groß das Netz ist, aber die Konstante hängt an der **Seltenheit** des Ereignisses und an der **Schiefe** der Größe. Hier ist die Wahrheit bekannt (alle Kantenmengen aufgezählt), also lässt sich jede Schätzung und jedes **Konfidenzintervall** gegen sie messen.
+Sein **Fehler fällt wie 1/√N**, ganz gleich, wie groß das Netz ist (bei gleicher Ausfallwahrscheinlichkeit), aber die Konstante hängt an der Streuung einer Ziehung, also an der **Seltenheit** des Ereignisses und an der **Schiefe** der Größe. Hier ist die Wahrheit bekannt (alle Kantenmengen aufgezählt), also lässt sich jede Schätzung und jedes **Konfidenzintervall** gegen sie messen.
 
 Weiter unten: **🔬 fünf Experimente**, **🧪 Spielwiese**, **🚧 Wo die Annahmen enden** und die Expander **⚠️ Annahmen, Grenzen und bekannte Probleme** und **📐 Mathematische Formulierung**.
 """
@@ -110,7 +110,7 @@ with st.expander("So funktioniert der Monte-Carlo-Schätzer", expanded=True):
 2. **Zählen:** Die **Schätzung** q̂ ist der Anteil der Ausfälle unter N Ziehungen. Sie ist erwartungstreu, ihre Streuung ist √(q(1−q)/N).
 3. **Intervall:** Aus der Zahl der Ausfälle folgt ein 95-%-Intervall; drei Verfahren stehen nebeneinander (**Wald**, **Wilson**, **Clopper-Pearson**).
 4. **Prüfen:** Die **Wahrheit** q kommt aus der Aufzählung aller 2^m Kantenmengen (m = Zahl der Kanten); nur deshalb lässt sich sehen, ob das Intervall sie enthält.
-5. **Warum das funktioniert:** Der Mittelwert unabhängiger Ziehungen konvergiert gegen den Erwartungswert, und seine Streuung hängt nur von der Varianz einer Ziehung ab, nicht von der Größe des Problems.
+5. **Warum das funktioniert:** Der Mittelwert unabhängiger Ziehungen konvergiert gegen den Erwartungswert, und seine Streuung ist √(Varianz einer Ziehung / N): Die Rate 1/√N hängt nicht von der Größe des Problems ab, die Varianz einer Ziehung schon.
         """
     )
 
@@ -276,7 +276,7 @@ st.markdown(
 | Annahme | Was passiert, wenn sie verletzt ist | Wer setzt an |
 |---|---|---|
 | **Der Fehler ist die Streuung eines Mittelwerts unabhängiger Ziehungen** | Wird viel gezogen, aber die Streuung einer Ziehung ist groß, bleibt der Fehler groß (Experiment 4, schiefe Größe). | Stücke 2 bis 6 (Varianzreduktion) |
-| **Das Ereignis ist nicht selten** | Das Wald-Intervall versagt, „kein Treffer“ ist der Regelfall; die Faustformel verlangt viele Ziehungen (Experiment 3). | Stück 7 (Importance Sampling) |
+| **Das Ereignis ist nicht selten** | Das Wald-Intervall versagt bei kleinem N·q (rund unter 10); bei N·q unter etwa 1 ist „kein Treffer“ der Regelfall; die Faustformel verlangt viele Ziehungen (Experiment 3). | Stück 7 (Importance Sampling) |
 | **Man kann direkt aus der Verteilung ziehen** | Sonst helfen nur Ketten oder Gewichte; das Stück behandelt Ketten nicht. | Stück 7 und später eine eigene Linie |
 | **Die Dimension spielt keine Rolle** | Die Rate 1/√N hängt nicht von der Dimension ab, die Konstante schon (Experiment 5). | Stück 9 (Quasi-Monte-Carlo) |
 | **Kanten fallen unabhängig und mit gleicher Wahrscheinlichkeit aus** | Abhängige Ausfälle (gemeinsame Ursache) ändern die Wahrheit und die Streuung; hier nicht modelliert. | – |

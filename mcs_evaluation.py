@@ -142,7 +142,7 @@ def verdict_dimension(exp: dict) -> tuple[str, str]:
     ok = 0.85 <= min(ratios) and max(ratios) <= 1.15
     text = (f"Bei gleichem R = {de(C.DIM_TARGET, 1)} streut der Schätzer auf Netzen mit {min(ms)} bis {max(ms)} Kanten gleich: "
             f"Verhältnis gemessen/Formel {de(min(ratios), 2)} bis {de(max(ratios), 2)} (Rauschen rund {de(noise, 0)} %). "
-            f"Die Aufzählung braucht dagegen 2^m Prüfungen; gegen 10 000 Ziehungen ist sie bis m = {breakeven_edges(10_000)} Kanten billiger, danach die Ziehung.")
+            f"Die naive Aufzählung braucht dagegen 2^m Prüfungen; gegen 10 000 Ziehungen ist sie (und liefert den exakten Wert) bis m = {breakeven_edges(10_000)} Kanten billiger, danach braucht sie mehr Prüfungen; Frontier-Verfahren verschieben diese Grenze weit nach oben.")
     return ("success" if ok else "warning"), text
 
 
@@ -165,8 +165,11 @@ def verdict_coverage(method_name: str, grid: np.ndarray) -> tuple[str, str]:
         text = f"Clopper-Pearson hält in allen {grid.size} Zellen mindestens 95 % (niedrigster Wert {de(lo, 3)}), ist aber oft deutlich konservativ (höchster Wert {de(hi, 3)})."
         return ("success" if ok else "error"), text
     kind = "warning" if lo < 0.93 else "info"
-    return kind, (f"{method_name}: Überdeckung zwischen {de(lo, 3)} und {de(hi, 3)} (Soll 0,95). "
-                  f"{'Das Verfahren garantiert nichts: ' if method_name == 'Wilson' else ''}Der niedrigste Wert steht bei den seltensten Ereignissen und den wenigsten Ziehungen.")
+    if method_name == "Wilson":
+        tail = "Das Verfahren garantiert nichts: Der niedrigste Wert steht bei den seltensten Ereignissen; die Überdeckung zackt mit N."
+    else:
+        tail = "Der niedrigste Wert steht bei den seltensten Ereignissen und den wenigsten Ziehungen."
+    return kind, f"{method_name}: Überdeckung zwischen {de(lo, 3)} und {de(hi, 3)} (Soll 0,95). {tail}"
 
 
 def required_draws_table() -> list[dict]:
@@ -198,7 +201,7 @@ def verdict_skew(exp: dict) -> tuple[str, str]:
     last = exp["cov"][worst_sigma][-1][0]
     first = exp["cov"][worst_sigma][0][0]
     text = (f"Bei σ = {de_g(worst_sigma)} (Schiefe {de(exp['skew'][worst_sigma], 0)}) deckt das t-Intervall bei N = {C.SKEW_N[0]} nur {de(first, 2)} "
-            f"und selbst bei N = {de(C.SKEW_N[-1], 0)} erst {de(last, 2)} (Soll 0,95); der Median des relativen Fehlers ist negativ, der Mittelwert wird unterschätzt.")
+            f"und selbst bei N = {de(C.SKEW_N[-1], 0)} erst {de(last, 2)} (Soll 0,95); der Median des relativen Fehlers ist negativ: meist wird der Mittelwert unterschätzt, im Erwartungswert ist der Schätzer aber unverzerrt.")
     return ("warning" if last < 0.94 else "success"), text
 
 

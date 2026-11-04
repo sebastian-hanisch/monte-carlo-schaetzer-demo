@@ -15,9 +15,9 @@ Ein Monte-Carlo-Schätzer wird oft mit zwei Sätzen erklärt: „Der Fehler fäl
 
 Vor dem Bau wurden die Hypothesen der Gliederung an Messreihen geprüft (Vormessung im Website-Repo, `docs/planung/monte-carlo-planung/vormessung/`). Was sich geändert hat:
 
-- **„Fehler unabhängig von der Dimension“ stimmt nur für die Rate.** Die Rate 1/√N hängt nicht von d ab, die Konstante schon: bei gleichem N wächst der relative Fehler von 2,9·10⁻³ (d = 1) auf 2,0·10⁻² (d = 20). Die App sagt deshalb „die Rate“, nie „der Fehler“.
-- **Neu: Das Wald-Intervall versagt genau bei seltenen Ereignissen, und „kein Ausfall“ ist dort der Regelfall**, kein Randfall (Experiment 3).
-- **Neu: Wilson ist gut, aber nicht garantiert** (niedrigste Überdeckung 0,905); nur Clopper–Pearson hält immer mindestens 95 %, dafür oft weit darüber.
+- **„Fehler unabhängig von der Dimension“ stimmt nur für die Rate.** Die Rate 1/√N hängt nicht von d ab, die Konstante schon: bei gleichem N wächst der relative Fehler von 2,9·10⁻³ (d = 1) auf 2,0·10⁻² (d = 20). Die App nennt deshalb die Rate und im selben Satz die Konstante, die von der Streuung einer Ziehung abhängt (Seltenheit, Schiefe).
+- **Neu: Das Wald-Intervall versagt, wenn N·q klein ist (rund unter 10); bei N·q unter etwa 1 ist „kein Ausfall“ der Regelfall**, kein Randfall (Experiment 3).
+- **Neu: Wilson ist gut, aber nicht garantiert** (niedrigste Überdeckung im Raster 0,905, zwischen den Rasterpunkten bis etwa 0,84); von den drei Verfahren hält nur Clopper–Pearson mindestens 95 %, dafür oft weit darüber.
 - **Korrektur an der Vormessung selbst:** In der Vormessung stand zunächst „rund 38.400/q“ Ziehungen für 10 % relativen Fehler; richtig ist **384/q** (1,96²/0,1²). Die Tabelle in der App rechnet aus der Formel und prüft sie gegen die exakte Binomialverteilung.
 - **Der Orakelweg ist unabhängig:** Die eigene Aufzählung stimmt für das 4×4-Gitter mit den Zahlen der `tutte-polynom-demo` (Abzählen-Linie, Frontier/Polynom statt Aufzählung) auf sechs Stellen überein.
 
@@ -37,7 +37,7 @@ Fünf Experimente, jedes mit live berechnetem Verdikt: (1) Fehler gegen N, (2) S
 
 ## Befunde (gemessen, keine Behauptungen)
 
-Alle Zahlen stehen in `tests/test_claims.py`; Ströme sind fest (nie ein einzelner Seed), Verhältnisse verrauschter Messungen haben Bänder. Das Rauschen der Verhältnisse beträgt bei 400 Wiederholungen rund 3,5 %, bei 300 rund 4,1 %: Abweichungen dieser Größe sind kein Befund.
+Fast alle Zahlen stehen in `tests/test_claims.py` (mit Toleranzen); Ströme sind fest (nie ein einzelner Seed), Verhältnisse verrauschter Messungen haben Bänder. Das Rauschen der Verhältnisse beträgt bei 400 Wiederholungen rund 3,5 %, bei 300 rund 4,1 %: Abweichungen dieser Größe sind kein Befund.
 
 | Frage | Befund | Test |
 |---|---|---|
@@ -46,14 +46,14 @@ Alle Zahlen stehen in `tests/test_claims.py`; Ströme sind fest (nie ein einzeln
 | **Kleines Netz** (2×3, p = 0,70, N = 100) | R = 0,556312; 45 Ausfälle; 482 Ziehungen wären für 10 % nötig | `test_preset_kleines_netz` |
 | **Großes Netz** (4×4, p = 0,90, N = 10 000) | R = 0,944085 (gleich der Tutte-Demo); 561 Ausfälle; Faustformel 6486, es reicht | `test_preset_grosses_netz` |
 | Fällt der Fehler wie 1/√N? (3×4, R = 0,5 und 0,95, je 400 Wiederholungen) | RMSE / √(q(1−q)/N): **0,99 bis 1,07** (R = 0,5) und **0,93 bis 1,06** (R = 0,95); Steigung −0,49 und −0,53 | `test_experiment_1_verhaeltnisse_und_steigung` |
-| Binomial statt Graphziehung zulässig? (N = 1000, q = 0,0555) | Mittel 55,53 (Graph) gegen 55,52 (Binomial), Streuung 7,21 gegen 7,23, Soll 7,24 | `test_binomialziehung_und_graphziehung_haben_dieselben_momente` |
-| Hängt die Streuung an der Netzgröße? (R = 0,5, N = 2000, 300 Wdh., 7, 12, 13, 17 Kanten) | Verhältnis gemessen/Formel **1,04 / 1,04 / 0,96 / 1,01** (zwischen 0,96 und 1,04); die Aufzählung braucht 2^m Prüfungen und ist gegen 10 000 Ziehungen bis **13 Kanten** billiger, ab 14 die Ziehung (Zählung, keine Zeitmessung) | `test_experiment_2_streuung_haengt_nicht_an_der_kantenzahl` |
+| Binomial statt Graphziehung zulässig? (N = 1000, q = 0,0555) | Mittel 55,33 (Graph) gegen 55,52 (Binomial), Streuung 7,03 gegen 7,23, Soll 55,49 und 7,24 (Unterschiede im Rauschen, der Test prüft mit Toleranz) | `test_binomialziehung_und_graphziehung_haben_dieselben_momente` |
+| Hängt die Streuung an der Netzgröße? (R = 0,5, N = 2000, 300 Wdh., 7, 12, 13, 17 Kanten) | Verhältnis gemessen/Formel **1,04 / 1,04 / 0,96 / 1,01** (zwischen 0,96 und 1,04); bei gleichem R haben alle Netze dasselbe q, die gleiche Streuung folgt aus der Binomialverteilung, die Messung bestätigt die Ziehfunktion; die naive Aufzählung braucht 2^m Prüfungen und ist gegen 10 000 Ziehungen bis **13 Kanten** billiger (sie liefert dafür den exakten Wert), ab 14 Kanten braucht sie mehr Prüfungen; Frontier-Verfahren verschieben diese Grenze weit nach oben (Zählung, keine Zeitmessung) | `test_experiment_2_streuung_haengt_nicht_an_der_kantenzahl` |
 | Wann trügt Wald? (exakte Überdeckung, Soll 0,95) | q = 0,01, N = 1000: **0,927**; q = 0,003, N = 10 000: **0,931**; q = 0,01, N = 10 000: **0,946**; niedrigster Wert **0,030** (q = 0,001, N = 30); höchster 0,953 | `test_experiment_3_wald_ueberdeckung` |
-| Wilson und Clopper–Pearson | Wilson 0,905 bis 0,974 (keine Garantie); Clopper–Pearson **0,951 bis 1,000** in allen 30 Zellen | `test_experiment_3_wilson_und_clopper_pearson` |
+| Wilson und Clopper–Pearson | Wilson im Raster 0,905 bis 0,974 (keine Garantie; zwischen den Rasterpunkten bis etwa 0,84); Clopper–Pearson **0,951 bis 1,000** in allen 30 Zellen | `test_experiment_3_wilson_und_clopper_pearson` |
 | Kein Ausfall in N Ziehungen, (1−q)^N | q = 0,001, N = 100: **0,905**; q = 0,01, N = 100: 0,366; q = 0,003, N = 300: 0,406 | `test_experiment_3_kein_treffer_und_benoetigte_ziehungen` |
 | Ziehungen für 10 % relativen Fehler, N* = 1,96²(1−q)/(q·0,01) | q = 0,1: 3457; 0,01: 38 030; 0,001: 383 762; 10⁻⁶: **384 145 498**; bis q = 10⁻⁴ trifft die Faustformel das Ziel mit Wahrscheinlichkeit 0,945 bis 0,955 (exakt aus der Binomialverteilung) | dasselbe, `test_faustformel_hat_384_als_konstante` |
-| Schiefe Größe (t-Intervall für den Mittelwert von exp(σZ), 2000 Wdh.) | σ = 0,5 (Schiefe 1,8): 0,935 / 0,951 / 0,956 / 0,948 bei N = 30 / 100 / 1000 / 10 000; σ = 1 (6,2): 0,952 bei N = 10 000; σ = 2 (**414**): **0,663 / 0,757 / 0,854 / 0,912**, Median des relativen Fehlers −0,279 / −0,131 / −0,039 / −0,007 (der Mittelwert wird unterschätzt) | `test_experiment_4_schiefe` |
-| Quadratur gegen Monte Carlo (f = exp(Σxᵢ), Budget etwa 10⁴) | relativer Fehler Quadratur / Monte Carlo: d = 1: 4,2·10⁻¹⁰ / 2,9·10⁻³; d = 5 (6 Punkte je Achse, 7776 Auswertungen): 5,8·10⁻³ / 7,0·10⁻³; d = 6 (4 Punkte, 4096): **1,6·10⁻² / 7,8·10⁻³**; d = 10 (2 Punkte, 1024): 9,9·10⁻² / 1,1·10⁻²; d = 20 (1 Punkt): 0,56 / 2,0·10⁻². **Monte Carlo gewinnt ab d = 6**; die Konstante wächst, die Rate nicht | `test_experiment_5_quadratur_gegen_monte_carlo` |
+| Schiefe Größe (t-Intervall für den Mittelwert von exp(σZ), 2000 Wdh.) | σ = 0,5 (Schiefe 1,8): 0,935 / 0,951 / 0,956 / 0,948 bei N = 30 / 100 / 1000 / 10 000; σ = 1 (6,2): 0,952 bei N = 10 000; σ = 2 (**414**): **0,663 / 0,757 / 0,854 / 0,912**, Median des relativen Fehlers −0,279 / −0,131 / −0,039 / −0,007 (der Median des Schätzfehlers ist negativ: meist wird der Mittelwert unterschätzt, im Erwartungswert ist der Schätzer aber unverzerrt) | `test_experiment_4_schiefe` |
+| Quadratur gegen Monte Carlo (f = exp(Σxᵢ), Budget etwa 10⁴) | relativer Fehler Quadratur / Monte Carlo (Formel): d = 1: 4,2·10⁻¹⁰ / 2,9·10⁻³; d = 5 (6 Punkte je Achse, 7776 Auswertungen): 5,8·10⁻³ / 6,9·10⁻³; d = 6 (4 Punkte, 4096): **1,5·10⁻² / 7,8·10⁻³**; d = 10 (2 Punkte, 1024): 9,9·10⁻² / 1,1·10⁻²; d = 20 (1 Punkt): 0,56 / 2,0·10⁻². **Monte Carlo gewinnt ab d = 6** (bei diesem Integranden und diesem Budget); die Konstante wächst, die Rate nicht | `test_experiment_5_quadratur_gegen_monte_carlo` |
 | Gitter | 2×3, 3×3, 2×5, 3×4, 3×5, 4×4 haben 7, 12, 13, 17, 22, 24 Kanten und 15, 192, 209, 2415, 30 305, 100 352 Spannbäume | `test_gitter_kantenzahlen_und_spannbaumzahlen` |
 
 ## Ehrliche Grenzen

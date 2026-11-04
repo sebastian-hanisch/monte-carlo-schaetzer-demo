@@ -44,7 +44,7 @@ PRESETS = {
 }
 PRESET_HELP = {
     "Standardfall (Voreinstellung)": "Gitter 3×4 (12 Knoten, 17 Kanten), jede Kante hält mit 80 %, 1000 Ziehungen: der gutartige Fall, in dem das Intervall hält.",
-    "Seltenes Ereignis": "Dasselbe Gitter, Kanten halten mit 99 %: Ausfälle sind selten, das Intervall des Schätzers wird unzuverlässig.",
+    "Seltenes Ereignis": "Dasselbe Gitter, Kanten halten mit 99 %: Ausfälle sind selten, das Wald-Intervall wird unbrauchbar (ein Punkt bei null Ausfällen).",
     "Kleines Netz, wenige Ziehungen": "Gitter 2×3 (7 Kanten), 100 Ziehungen: wenig Ziehungen, ein breites Intervall.",
     "Großes Netz (4×4)": "Gitter 4×4 (24 Kanten): die exakte Zuverlässigkeit steht aus gespeicherten Zahlen bereit, geschätzt wird mit 10 000 Ziehungen.",
 }
