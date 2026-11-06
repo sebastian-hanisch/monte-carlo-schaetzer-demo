@@ -103,6 +103,19 @@ Weiter unten: **🔬 fünf Experimente**, **🧪 Spielwiese**, **🚧 Wo die Ann
 """
 )
 
+# erklaerseite:einfach:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/monte-carlo-schaetzer-erklaert.json, nicht von Hand ändern)
+with st.expander("💬 In einfachen Worten"):
+    st.markdown(
+        """
+Ein Netz aus Orten und Verbindungen soll geprüft werden: Wie wahrscheinlich ist es, dass es nach zufälligen Ausfällen auseinanderfällt? Statt alle Fälle durchzurechnen, spielt der **Monte-Carlo-Schätzer** den Zufall durch. Er würfelt für jede Verbindung, ob sie hält, prüft, ob das Netz noch zusammenhängt, und zählt, wie oft es zerfällt. Dieser Anteil ist die Schätzung.
+
+Je mehr Durchgänge, desto genauer, aber nur langsam. Ist der Ausfall selten, sieht man in wenigen Durchgängen oft keinen einzigen, und das übliche Intervall schrumpft auf einen Punkt, der die Wahrheit verfehlt. Die Demo kennt bei kleinen Netzen die richtige Antwort und misst daran die Fehler und drei Intervalle.
+
+[Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/monte-carlo-schaetzer-erklaert.html)
+        """
+    )
+# erklaerseite:einfach:end
+
 with st.expander("So funktioniert der Monte-Carlo-Schätzer", expanded=True):
     st.markdown(
         """
@@ -297,6 +310,25 @@ with st.expander("⚠️ Annahmen, Grenzen und bekannte Probleme"):
 st.markdown("---")
 
 with st.expander("📐 Mathematische Formulierung"):
+    # erklaerseite:lesehilfe:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/monte-carlo-schaetzer-erklaert.json, nicht von Hand ändern)
+    st.markdown(
+        r"""
+**Lesehilfe.** Gegeben ist ein Netz mit $m$ Kanten, die jede unabhängig mit Wahrscheinlichkeit $p$ halten, und $N$ Ziehungen. Gesucht ist die Wahrscheinlichkeit $q$, dass das Netz nicht mehr zusammenhängt, als Schätzung $\hat q$ mit einem 95-%-Intervall.
+
+| Symbol | Bedeutung |
+|---|---|
+| $m$ | Zahl der Kanten des Netzes |
+| $p$ | Wahrscheinlichkeit, dass eine Kante hält |
+| $q$ | Ausfallwahrscheinlichkeit des Netzes (die gesuchte Wahrheit) |
+| $N$ | Zahl der Ziehungen |
+| $K$, $\hat q$ | Zahl der Ausfälle unter den Ziehungen bzw. der Anteil $K/N$ (die Schätzung) |
+| $z$ | Normalquantil 1,96 für ein 95-%-Intervall |
+| $\varepsilon$, $N^\ast$ | gewünschter relativer Fehler bzw. die dafür nötige Ziehungszahl |
+
+[Schritt für Schritt erklärt, mit Herleitung und Literatur](https://sebastianhanisch.net/monte-carlo-schaetzer-erklaert.html#fachleute)
+        """
+    )
+    # erklaerseite:lesehilfe:end
     st.markdown(
         r"""
 **Problem.** Ein Netz mit $n$ Knoten und $m$ Kanten; jede Kante hält unabhängig mit Wahrscheinlichkeit $p$. Gesucht ist die Ausfallwahrscheinlichkeit $q = 1 - R(p)$, wobei $R(p)$ die Wahrscheinlichkeit ist, dass das Netz zusammenhängt.
