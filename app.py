@@ -173,7 +173,7 @@ with st.expander("🔎 Einzelne Ziehungen ansehen"):
     states = A.edge_states(A.stream_seed(settings.seed), nr, settings.p, a.netz.m)[nr - 1]
     ok = bool(A.connected(states[None, :], a.netz.n, a.netz.edges)[0])
     st.plotly_chart(build_netz(a.netz, states, ok), width="stretch", key="netz_chart")
-    st.caption(f"Ausgefallene Kanten: {int((~states).sum())} von {a.netz.m}. Eine Ziehung ist ein Münzwurf mit Ergebnis „zusammenhängend“ oder „nicht“; die Schätzung ist ihr Anteil.")
+    st.caption(f"Ausgefallene Kanten: {int((~states).sum())} von {a.netz.m}. Eine Ziehung ist ein Bernoulli-Versuch (Münzwurf) mit Ergebnis „zusammenhängend“ oder „nicht“; die Schätzung ist ihr Anteil.")
 
 # --- Kernfrage -----------------------------------------------------------------------------------------------------------------------------
 
@@ -289,7 +289,7 @@ st.markdown(
 | Annahme | Was passiert, wenn sie verletzt ist | Wer setzt an |
 |---|---|---|
 | **Der Fehler ist die Streuung eines Mittelwerts unabhängiger Ziehungen** | Wird viel gezogen, aber die Streuung einer Ziehung ist groß, bleibt der Fehler groß (Experiment 4, schiefe Größe). | Stücke 2 bis 6 (Varianzreduktion) |
-| **Das Ereignis ist nicht selten** | Das Wald-Intervall versagt bei kleinem N·q (rund unter 10); bei N·q unter etwa 1 ist „kein Treffer“ der Regelfall; die Faustformel verlangt viele Ziehungen (Experiment 3). | Stück 7 (Importance Sampling) |
+| **Das Ereignis ist nicht selten** | Das Wald-Intervall versagt bei kleinem N·q (rund unter 10); bei N·q unter etwa 1 ist „kein Ausfall“ der Regelfall; die Faustformel verlangt viele Ziehungen (Experiment 3). | Stück 7 (Importance Sampling) |
 | **Man kann direkt aus der Verteilung ziehen** | Sonst helfen nur Ketten oder Gewichte; das Stück behandelt Ketten nicht. | Stück 7 und später eine eigene Linie |
 | **Die Dimension spielt keine Rolle** | Die Rate 1/√N hängt nicht von der Dimension ab, die Konstante schon (Experiment 5). | Stück 9 (Quasi-Monte-Carlo) |
 | **Kanten fallen unabhängig und mit gleicher Wahrscheinlichkeit aus** | Abhängige Ausfälle (gemeinsame Ursache) ändern die Wahrheit und die Streuung; hier nicht modelliert. | – |
@@ -299,7 +299,7 @@ st.markdown(
 with st.expander("⚠️ Annahmen, Grenzen und bekannte Probleme"):
     st.markdown(
         """
-**Annahmen.** Alle Netze, Ausfälle und Größen sind **erfunden**; die Wahrheit ist die exakte Aufzählung oder eine geschlossene Formel. Die Kanten fallen unabhängig und mit gleicher Wahrscheinlichkeit aus. Die Zufallszahlen kommen aus festen Strömen (SplitMix64), nie aus einem einzelnen Seed.
+**Annahmen.** Alle Netze, Ausfälle und Größen sind **erfunden**; die Wahrheit ist die exakte Aufzählung oder eine geschlossene Formel. Die Kanten fallen unabhängig und mit gleicher Wahrscheinlichkeit aus. Die Zufallszahlen kommen aus festen Strömen (SplitMix64), nie aus einem einzelnen Zufalls-Seed.
 
 **Grenzen.** Live aufgezählt wird nur bis 17 Kanten; die Wahrheit für das 3×5- und das 4×4-Gitter steht in gespeicherten Zahlen (Aufzählung, mit dem Matrix-Baum-Satz und den Zahlen der tutte-polynom-demo geprüft). Experiment 1 zieht die Ausfallzahl aus der Binomialverteilung statt aus Graphziehungen, Experiment 2 nutzt echte Graphziehungen. Experiment 5 hat nur einen glatten Integranden, Experiment 4 nur die log-normale Größe. Zeiten werden nicht gemessen, nur die Zahl der Netzprüfungen.
 

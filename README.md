@@ -58,7 +58,7 @@ Fast alle Zahlen stehen in `tests/test_claims.py` (mit Toleranzen); Ströme sind
 ## Ehrliche Grenzen
 
 - **Nur an erfundenen Gittern und einer erfundenen Größe geprüft.** Die Wahrheit ist exakt, aber ob die Aussagen auf reale Netze übertragbar sind, zeigt die Demo nicht.
-- **Zwei Vehikel statt eines:** Das Netz trägt die Experimente 1 bis 3, die schiefe Größe und der Integrand tragen 4 und 5. Das ist die ehrliche Abweichung vom Muster „eine Instanz wächst“ (siehe Plan).
+- **Zwei Vehikel statt eines:** Das Netz ist das Vehikel der Experimente 1 bis 3, die schiefe Größe und der Integrand sind es für 4 und 5. Das ist die ehrliche Abweichung vom Muster „eine Instanz wächst“ (siehe Plan).
 - **Experiment 5 hat nur einen glatten Integranden** (exp(Σx)); für unglatte oder schwach von der Dimension abhängige Integranden kann die Kreuzung bei einem anderen d liegen. Quadratur und Monte Carlo haben bei gleichem Budget leicht verschiedene Auswertungszahlen (4096 gegen 10 000 bei d = 6, weil n^d nicht beliebig fein einstellbar ist).
 - **Zeiten werden nicht gemessen**, nur die Zahl der Netzprüfungen. Ein Vergleich Aufzählung gegen Ziehung in Sekunden hängt vom Rechner ab; auf dem Entwicklungsrechner dauerte die Aufzählung bei 17 Kanten rund 0,3 s, bei 24 Kanten gut eine Minute (Vormessung, nicht getestet).
 - **Die Intervalle gelten für unabhängige Ziehungen.** Ketten (abhängige Ziehungen) gehören nicht in dieses Stück.
